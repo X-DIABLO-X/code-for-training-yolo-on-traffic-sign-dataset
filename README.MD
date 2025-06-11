@@ -6,9 +6,7 @@ Dataset Source: /kaggle/input/traffic-sign-detection-dataset/Traffic_sign_detect
 
 Structure:
 
-bash
-Copy
-Edit
+```
 Traffic_sign_detection_data/
 ├── images/
 │   ├── train/
@@ -18,6 +16,7 @@ Traffic_sign_detection_data/
     ├── train/
     ├── val/
     └── test/
+```
 Images are in JPG/PNG format.
 
 Labels are in YOLO format (.txt with normalized [x_center, y_center, width, height]).
@@ -33,9 +32,7 @@ pip install ultralytics opencv-python matplotlib
 
 🏋️ Training
 Step 1: Check for GPU
-python
-Copy
-Edit
+```
 device = "cuda" if torch.cuda.is_available() else "cpu"
 Step 2: Train the YOLOv8 model
 python
@@ -58,10 +55,9 @@ model.train(
     name="yolo_v8m_traffic_signs",
     exist_ok=True
 )
+```
 Optional Fine-Tuning:
-python
-Copy
-Edit
+```
 model.train(
     data="/kaggle/working/data.yaml",
     epochs=20,
@@ -73,11 +69,10 @@ model.train(
     name="yolo_v8m_traffic_signs_finetune",
     resume=True
 )
+```
 🧪 Inference and Visualization
 Load and Run Predictions on Test Images
-python
-Copy
-Edit
+```
 from ultralytics import YOLO
 import cv2, os
 import matplotlib.pyplot as plt
@@ -98,26 +93,23 @@ for img_path in image_files[:10]:
     plt.imshow(img)
     plt.axis('off')
     plt.show()
+```
 📦 Model Export
 After training:
-
-python
-Copy
-Edit
+```
 model.export(format="torchscript")
+```
 The model will be saved as:
 
-bash
-Copy
-Edit
+```
 runs/traffic_sign_detection/yolo_v8m_traffic_signs/weights/best.torchscript
+```
 📊 Evaluation Metrics
 Use the built-in validation:
 
-bash
-Copy
-Edit
+```
 yolo val task=detect model=best.pt data=/kaggle/working/data.yaml imgsz=640
+```
 You’ll get:
 
 mAP@0.5
